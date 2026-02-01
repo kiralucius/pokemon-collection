@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokémon Collection</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <h1>Pokémon Collection</h1>
+  <input type="text" placeholder="Cerca...">
+
+  <div id="cards"></div>
+
+  <!-- MODAL -->
+  <div id="modal" class="hidden">
+  <div class="modal-content">
+    <button id="closeModal">X</button>
+
+    <div class="modal-body">
+      <img id="modalImg">
+
+      <div id="modalInfo" class="modal-info">
+        <!-- testo generato da JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
