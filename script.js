@@ -7,6 +7,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalContent = document.querySelector(".modal-content");
 
   // =========================
+// CAMBIO VISTA
+// =========================
+const btnCards = document.getElementById("btn-cards");
+const btnCollection = document.getElementById("btn-collection");
+
+const viewCards = document.getElementById("view-cards");
+const viewCollection = document.getElementById("view-collection");
+
+btnCards.addEventListener("click", () => {
+  viewCards.classList.remove("hidden");
+  viewCollection.classList.add("hidden");
+
+  btnCards.classList.add("active");
+  btnCollection.classList.remove("active");
+});
+
+btnCollection.addEventListener("click", () => {
+  viewCards.classList.add("hidden");
+  viewCollection.classList.remove("hidden");
+
+  btnCollection.classList.add("active");
+  btnCards.classList.remove("active");
+});
+
+  // =========================
   // CARICAMENTO CARTE
   // =========================
   fetch("data/cards.json")

@@ -1,32 +1,46 @@
-<!DOCTYPE html>
-<html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Pokémon Collection</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
-  <h1>Pokémon Collection</h1>
-  <input type="text" placeholder="Cerca...">
 
-  <div id="cards"></div>
+  <div id="app">
 
-  <!-- MODAL -->
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <h2>Pokémon</h2>
+      <button id="btn-cards" class="active">Lista carte</button>
+      <button id="btn-collection">La mia collezione</button>
+    </aside>
+
+    <!-- CONTENUTO PRINCIPALE -->
+    <main id="main-view">
+
+      <!-- VIEW: LISTA CARTE -->
+      <section id="view-cards">
+        <h1>Lista carte</h1>
+        <div id="cards"></div>
+      </section>
+
+      <!-- VIEW: COLLEZIONE -->
+      <section id="view-collection" class="hidden">
+        <h1>La mia collezione</h1>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL (rimane identico) -->
   <div id="modal" class="hidden">
-  <div class="modal-content">
-    <div class="modal-body">
-      <img id="modalImg">
-
-      <div id="modalInfo" class="modal-info">
-        <!-- testo generato da JS -->
+    <div class="modal-content">
+      <div class="modal-body">
+        <img id="modalImg">
+        <div id="modalInfo"></div>
       </div>
     </div>
   </div>
-</div>
-
 
   <script src="script.js"></script>
 </body>
-</html>

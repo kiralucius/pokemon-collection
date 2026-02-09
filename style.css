@@ -105,3 +105,74 @@ input[type="text"] {
 .modal-astri-lucenti strong {
   color: #9c7c19;
 }
+
+#app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+#sidebar {
+  width: 220px;
+  background: #111;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#sidebar h2 {
+  color: #c9a43b;
+  margin-bottom: 20px;
+}
+
+#sidebar button {
+  background: none;
+  border: 1px solid #c9a43b;
+  color: #c9a43b;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+
+}
+
+#sidebar button:hover {
+  background: #2a2a2a;
+}
+
+#sidebar button.active {
+   background-color: #c9a43b;
+  color: #111;
+}
+
+/* MAIN VIEW */
+#main-view {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#view-collection {
+  background-image: url("images/bookshelf.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+#view-collection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 0;
+}
+
+#view-collection > * {
+  position: relative;
+  z-index: 1;
+}
