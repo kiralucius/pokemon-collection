@@ -1,105 +1,100 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // --- SELETTORI ---
+    const ui = {
+        views: {
+            cards: document.getElementById("view-cards"),
+            collection: document.getElementById("view-collection")
+        },
+        buttons: {
+            cards: document.getElementById("btn-cards"),
+            collection: document.getElementById("btn-collection"),
+            addBinder: document.getElementById("add-collection")
+        },
+        modals: {
+            main: document.getElementById("modal"),
+            binder: document.getElementById("binder-modal")
+        }
+    };
 
-  const cardsContainer = document.getElementById("cards");
-  const modal = document.getElementById("modal");
-  const modalImg = document.getElementById("modalImg");
-  const modalInfo = document.getElementById("modalInfo");
-  const modalContent = document.querySelector(".modal-content");
+    // --- LOGICA VISTE (Sidebar) ---
+    const switchView = (target) => {
+        Object.keys(ui.views).forEach(key => {
+            const isTarget = key === target;
+            ui.views[key].classList.toggle("hidden", !isTarget);
+            ui.buttons[key].classList.toggle("active", isTarget);
+        });
+    };
 
-  // =========================
-// CAMBIO VISTA
-// =========================
-const btnCards = document.getElementById("btn-cards");
-const btnCollection = document.getElementById("btn-collection");
+    ui.buttons.cards.addEventListener("click", () => switchView('cards'));
+    ui.buttons.collection.addEventListener("click", () => switchView('collection'));
 
-const viewCards = document.getElementById("view-cards");
-const viewCollection = document.getElementById("view-collection");
+    // --- CARICAMENTO CARTE ---
+    const cardsContainer = document.getElementById("cards");
 
-btnCards.addEventListener("click", () => {
-  viewCards.classList.remove("hidden");
-  viewCollection.classList.add("hidden");
-
-  btnCards.classList.add("active");
-  btnCollection.classList.remove("active");
-});
-
-btnCollection.addEventListener("click", () => {
-  viewCards.classList.add("hidden");
-  viewCollection.classList.remove("hidden");
-
-  btnCollection.classList.add("active");
-  btnCards.classList.remove("active");
-});
-
-  // =========================
-  // CARICAMENTO CARTE
-  // =========================
-  fetch("data/cards.json")
-    .then(res => res.json())
-    .then(cards => {
-      cards.forEach(card => {
-        const img = document.createElement("img");
-        img.src = card.immagine;
-        img.style.width = "160px";
-        img.style.cursor = "pointer";
-
-        img.addEventListener("click", () => {
-          openModal(card);
+    fetch("data/cards.json")
+        .then(res => res.json())
+        .then(cards => {
+            cards.forEach(card => {
+                const img = document.createElement("img");
+                img.src = card.immagine;
+                img.className = "card-thumb"; // Usa classi per lo stile, non inline JS
+                img.addEventListener("click", () => openCardModal(card));
+                cardsContainer.appendChild(img);
+            });
         });
 
-        cardsContainer.appendChild(img);
-      });
-    });
+    // --- MODALE DETTAGLIO CARTA ---
+    function openCardModal(card) {
+        const modalContent = document.querySelector(".modal-content");
+        const modalImg = document.getElementById("modalImg");
+        const modalInfo = document.getElementById("modalInfo");
 
-  // =========================
-  // APERTURA MODAL
-  // =========================
-  function openModal(card) {
-    modal.classList.remove("hidden");
+        ui.modals.main.classList.remove("hidden");
+        modalContent.className = "modal-content" + (card.set === "Astri Lucenti" ? " modal-astri-lucenti" : "");
+        modalImg.src = card.immagine;
 
-    // reset classi tema
-    modalContent.className = "modal-content";
+        const owned = localStorage.getItem(card.id) === "true";
 
-    // tema per set
-    if (card.set === "Astri Lucenti") {
-      modalContent.classList.add("modal-astri-lucenti");
+        modalInfo.innerHTML = `
+            <h2>${card.nome}</h2>
+            <p><strong>Rarità:</strong> ${card.rarita}</p>
+            <p><strong>Set:</strong> ${card.set}</p>
+            <p><strong>Illustratore:</strong> ${card.illustratore}</p>
+            <label><input type="checkbox" id="ownedCheckbox" ${owned ? "checked" : ""}> Posseduta</label>
+        `;
+
+        document.getElementById("ownedCheckbox").onchange = (e) => {
+            localStorage.setItem(card.id, e.target.checked);
+        };
     }
 
-    modalImg.src = card.immagine;
+    // --- LOGICA RACCOGLITORE (Binder) ---
+    const binderForm = {
+        container: document.getElementById("binder-form"),
+        artist: document.getElementById("artist-form"),
+        set: document.getElementById("set-form"),
+        label: document.getElementById("binder-label")
+    };
 
-    const owned = localStorage.getItem(card.id) === "true";
-
-    modalInfo.innerHTML = `
-      <h2>${card.nome}</h2>
-      <p><strong>Rarità:</strong> ${card.rarita}</p>
-      <p><strong>Set:</strong> ${card.set}</p>
-      <p><strong>Numero:</strong> ${card.numero}</p>
-      <p><strong>Illustratore:</strong> ${card.illustratore}</p>
-
-      <label style="margin-top: 10px;">
-        <input type="checkbox" id="ownedCheckbox" ${owned ? "checked" : ""}>
-        Ce l’ho
-      </label>
-    `;
-
-    const checkbox = document.getElementById("ownedCheckbox");
-    checkbox.addEventListener("change", () => {
-      localStorage.setItem(card.id, checkbox.checked);
+    ui.buttons.addBinder.addEventListener("click", () => {
+        ui.modals.binder.classList.remove("hidden");
+        Object.values(binderForm).forEach(el => el?.classList?.add("hidden"));
     });
-  }
 
-  // =========================
-  // CHIUSURA MODAL
-  // =========================
+    // Gestione click opzioni (Set o Artista)
+    ui.modals.binder.addEventListener("click", (e) => {
+        const mode = e.target.dataset.mode;
+        if (!mode) return;
 
-  // clic su overlay → chiude
-  modal.addEventListener("click", () => {
-    modal.classList.add("hidden");
-  });
+        binderForm.container.classList.remove("hidden");
+        binderForm.artist.classList.toggle("hidden", mode !== "artist");
+        binderForm.set.classList.toggle("hidden", mode !== "set");
+    });
 
-  // clic sul contenuto → NON chiude
-  modalContent.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
-
+    // Chiusura modali cliccando fuori
+    [ui.modals.main, ui.modals.binder].forEach(m => {
+        m.addEventListener("click", (e) => {
+            if (e.target === m) m.classList.add("hidden");
+        });
+    });
 });

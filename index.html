@@ -7,32 +7,64 @@
 
   <div id="app">
 
-    <!-- SIDEBAR -->
     <aside id="sidebar">
       <h2>Pokémon</h2>
       <button id="btn-cards" class="active">Lista carte</button>
       <button id="btn-collection">La mia collezione</button>
     </aside>
 
-    <!-- CONTENUTO PRINCIPALE -->
     <main id="main-view">
 
-      <!-- VIEW: LISTA CARTE -->
       <section id="view-cards">
         <h1>Lista carte</h1>
         <div id="cards"></div>
       </section>
 
-      <!-- VIEW: COLLEZIONE -->
       <section id="view-collection" class="hidden">
         <h1>La mia collezione</h1>
+
+        <div id="shelf-overlay">
+          <div id="binder-modal" class="hidden">
+            <div class="binder-content">
+
+              <div class="binder-options">
+                <h2>Scegli modalità</h2>
+                <button data-mode="set">Per Set</button>
+                <button data-mode="artist">Per Illustratore</button>
+
+                <div id="binder-form" class="hidden">
+
+                  <!-- MODALITÀ ILLUSTRATORE -->
+                  <div id="artist-form" class="hidden">
+                    <input type="text" id="artist-name" placeholder="Nome illustratore">
+                    <button id="confirm-artist">Conferma</button>
+                  </div>
+
+                  <!-- MODALITÀ SET -->
+                  <div id="set-form" class="hidden">
+                    <button class="set-choice" data-set="Astri Lucenti">
+                      Astri Lucenti
+                    </button>
+                  </div>
+
+                </div>
+
+
+              </div>
+              <img id="binder-img" src="images/binder.png" alt="Raccoglitore">
+              <div id="binder-label"></div>
+            </div>
+          </div>
+          <button id="add-collection">+</button>
+        </div>
       </section>
+
+
 
     </main>
 
   </div>
 
-  <!-- MODAL (rimane identico) -->
   <div id="modal" class="hidden">
     <div class="modal-content">
       <div class="modal-body">
